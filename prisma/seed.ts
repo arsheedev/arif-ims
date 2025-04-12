@@ -15,8 +15,7 @@ async function main() {
 			name: 'Arshee Vincent',
 			username: 'admin',
 			password: hashedPassword,
-			role: 'ADMIN',
-			verified: true
+			role: 'ADMIN'
 		}
 	})
 }
