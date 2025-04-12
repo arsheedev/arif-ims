@@ -10,11 +10,7 @@ import type { PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.session) {
-		if (locals.session.role === 'ADMIN') {
-			redirect(302, '/admin')
-		} else if (locals.session.role === 'USER') {
-			redirect(302, '/dashboard')
-		}
+		redirect(302, '/dashboard')
 	}
 
 	return { form: await superValidate(zod(LoginUserSchema)) }
@@ -39,13 +35,6 @@ export const actions: Actions = {
 			return fail(400, {
 				form,
 				message: 'Username atau password salah!'
-			})
-		}
-
-		if (!userExist.verified) {
-			return fail(400, {
-				form,
-				message: 'Akun masih belum terverifikasi, silahkan hubungi admin!'
 			})
 		}
 
