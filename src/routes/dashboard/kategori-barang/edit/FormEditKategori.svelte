@@ -3,18 +3,18 @@
 	import { buttonVariants } from '$lib/components/ui/button'
 	import * as Form from '$lib/components/ui/form'
 	import { Input } from '$lib/components/ui/input'
-	import NamaBarangSchema from '$lib/schemas/nama-barang-schema'
+	import KategoriBarangSchema from '$lib/schemas/kategori-barang-schema'
 	import { toast } from 'svelte-sonner'
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 
-	export let data: SuperValidated<Infer<typeof NamaBarangSchema>>
+	export let data: SuperValidated<Infer<typeof KategoriBarangSchema>>
 	export let message: string | undefined
 
 	let loading = false
 
 	const form = superForm(data, {
-		validators: zodClient(NamaBarangSchema),
+		validators: zodClient(KategoriBarangSchema),
 		onSubmit() {
 			loading = true
 		},
@@ -24,7 +24,7 @@
 			if (result.type === 'failure') {
 				toast.error(result.data?.message || 'Terjadi kesalahan validasi.')
 			} else if (result.type === 'success') {
-				toast.success('Berhasil menambahkan data!')
+				toast.success('Berhasil Edit Kategori!')
 				goto('/dashboard/nama-barang')
 			}
 		},
@@ -42,21 +42,21 @@
 	method="POST"
 	use:enhance
 >
-	<Form.Field {form} name="idDaftarBarang">
+	<Form.Field {form} name="idKategori">
 		<Form.Control>
 			{#snippet children({ props })}
-				<Form.Label>Masukan ID Barang</Form.Label>
-				<Input {...props} bind:value={$formData.idDaftarBarang} />
+				<Form.Label>Masukan ID Kategori</Form.Label>
+				<Input {...props} bind:value={$formData.idKategori} />
 			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Field {form} name="namaBarang">
+	<Form.Field {form} name="namaKategori">
 		<Form.Control>
 			{#snippet children({ props })}
-				<Form.Label>Masukan Nama Barang</Form.Label>
-				<Input {...props} bind:value={$formData.namaBarang} />
+				<Form.Label>Masukan Nama Kategori</Form.Label>
+				<Input {...props} bind:value={$formData.namaKategori} />
 			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
@@ -67,7 +67,7 @@
 	{/if}
 
 	<div class="space-x-2 self-end pt-4">
-		<a href="/dashboard/nama-barang" class={buttonVariants({ variant: 'secondary' })}>Back</a>
+		<a href="/dashboard/kategori-barang" class={buttonVariants({ variant: 'secondary' })}>Back</a>
 		<Form.Button disabled={loading}>Submit</Form.Button>
 	</div>
 </form>

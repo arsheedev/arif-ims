@@ -70,7 +70,7 @@ export const userNavMenu: AdminNavMenutype = [
 			},
 			{
 				title: 'Data Produk',
-				url: '/admin/data-produk'
+				url: '/dashboard/produk'
 			},
 			{
 				title: 'Data Pembelian',
@@ -82,7 +82,7 @@ export const userNavMenu: AdminNavMenutype = [
 			},
 			{
 				title: 'Data Kategori',
-				url: '/admin/data-kategori'
+				url: '/dashboard/kategori-barang'
 			},
 			{
 				title: 'Data Satuan',
