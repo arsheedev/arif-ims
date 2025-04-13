@@ -25,7 +25,7 @@ export const actions: Actions = {
 		const form = await superValidate(event, zod(ProdukSchema))
 
 		if (!form.valid) {
-			fail(400, {
+			return fail(400, {
 				form,
 				message: ''
 			})
@@ -42,26 +42,19 @@ export const actions: Actions = {
 			keterangan
 		} = form.data
 
-		try {
-			await db.produk.create({
-				data: {
-					hargaBeli,
-					hargaJual,
-					idProduk,
-					kategoriBarangId,
-					namaBarangId,
-					satuanBarangId,
-					supplierBarangId,
-					keterangan
-				}
-			})
+		await db.produk.create({
+			data: {
+				hargaBeli,
+				hargaJual,
+				idProduk,
+				kategoriBarangId,
+				namaBarangId,
+				satuanBarangId,
+				supplierBarangId,
+				keterangan
+			}
+		})
 
-			redirect(303, '/dashboard/produk')
-		} catch {
-			fail(500, {
-				form,
-				message: 'Something went wrong!'
-			})
-		}
+		redirect(303, '/dashboard/produk')
 	}
 }

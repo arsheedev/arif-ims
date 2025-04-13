@@ -18,29 +18,31 @@ export const actions: Actions = {
 		const form = await superValidate(event, zod(PenjualanBarangSchema))
 
 		if (!form.valid) {
-			fail(400, {
+			return fail(400, {
 				form,
 				message: ''
 			})
 		}
 
 		const id = Number(event.url.searchParams.get('id'))
+		const existingData = await db.penjualanBarang.findUnique({ where: { id } })
+
+		if (!existingData) {
+			return fail(404, {
+				form,
+				message: 'Data tidak ditemukan!'
+			})
+		}
+
 		const { idPenjualan, jumlah, kodeTransaksiPenjualan, namaBarangId, tanggalPenjualan } =
 			form.data
 
-		try {
-			//unfinished bussiness logic keks
-			await db.penjualanBarang.update({
-				where: { id },
-				data: { idPenjualan, jumlah, kodeTransaksiPenjualan, namaBarangId, tanggalPenjualan }
-			})
+		//unfinished bussiness logic keks
+		await db.penjualanBarang.update({
+			where: { id },
+			data: { idPenjualan, jumlah, kodeTransaksiPenjualan, namaBarangId, tanggalPenjualan }
+		})
 
-			redirect(303, '/dashboard/penjualan-barang')
-		} catch {
-			fail(500, {
-				form,
-				message: 'Something went wrong!'
-			})
-		}
+		redirect(303, '/dashboard/penjualan-barang')
 	}
 }

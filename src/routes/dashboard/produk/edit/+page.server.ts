@@ -28,13 +28,22 @@ export const actions: Actions = {
 		const form = await superValidate(event, zod(ProdukSchema))
 
 		if (!form.valid) {
-			fail(400, {
+			return fail(400, {
 				form,
 				message: ''
 			})
 		}
 
 		const id = Number(event.url.searchParams.get('id'))
+		const existingData = await db.produk.findUnique({ where: { id } })
+
+		if (!existingData) {
+			return fail(404, {
+				form,
+				message: 'Data tidak ditemukan!'
+			})
+		}
+
 		const {
 			hargaBeli,
 			hargaJual,
@@ -46,27 +55,20 @@ export const actions: Actions = {
 			keterangan
 		} = form.data
 
-		try {
-			await db.produk.update({
-				where: { id },
-				data: {
-					hargaBeli,
-					hargaJual,
-					idProduk,
-					kategoriBarangId,
-					namaBarangId,
-					satuanBarangId,
-					supplierBarangId,
-					keterangan
-				}
-			})
+		await db.produk.update({
+			where: { id: existingData.id },
+			data: {
+				hargaBeli,
+				hargaJual,
+				idProduk,
+				kategoriBarangId,
+				namaBarangId,
+				satuanBarangId,
+				supplierBarangId,
+				keterangan
+			}
+		})
 
-			redirect(303, '/dashboard/produk')
-		} catch {
-			fail(500, {
-				form,
-				message: 'Something went wrong!'
-			})
-		}
+		redirect(303, '/dashboard/produk')
 	}
 }

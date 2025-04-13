@@ -17,24 +17,29 @@ export const actions: Actions = {
 		const form = await superValidate(event, zod(NamaBarangSchema))
 
 		if (!form.valid) {
-			fail(400, {
+			return fail(400, {
 				form,
 				message: ''
 			})
 		}
 
 		const id = Number(event.url.searchParams.get('id'))
-		const { idDaftarBarang, namaBarang } = form.data
+		const existingData = await db.namaBarang.findUnique({ where: { id } })
 
-		try {
-			await db.namaBarang.update({ where: { id }, data: { idDaftarBarang, namaBarang } })
-
-			redirect(303, '/dashboard/nama-barang')
-		} catch {
-			fail(500, {
+		if (!existingData) {
+			return fail(404, {
 				form,
-				message: 'Something went wrong!'
+				message: 'Data tidak ditemukan!'
 			})
 		}
+
+		const { idDaftarBarang, namaBarang } = form.data
+
+		await db.namaBarang.update({
+			where: { id: existingData.id },
+			data: { idDaftarBarang, namaBarang }
+		})
+
+		redirect(303, '/dashboard/nama-barang')
 	}
 }

@@ -14,7 +14,7 @@ export const actions: Actions = {
 		const form = await superValidate(event, zod(SupplierBarangSchema))
 
 		if (!form.valid) {
-			fail(400, {
+			return fail(400, {
 				form,
 				message: ''
 			})
@@ -22,17 +22,10 @@ export const actions: Actions = {
 
 		const { alamat, idSupplier, nama, noTelepon, email, noFax } = form.data
 
-		try {
-			await db.supplierBarang.create({
-				data: { alamat, idSupplier, nama, noTelepon, email, noFax }
-			})
+		await db.supplierBarang.create({
+			data: { alamat, idSupplier, nama, noTelepon, email, noFax }
+		})
 
-			redirect(303, '/dashboard/supplier-barang')
-		} catch {
-			fail(500, {
-				form,
-				message: 'Something went wrong!'
-			})
-		}
+		redirect(303, '/dashboard/supplier-barang')
 	}
 }

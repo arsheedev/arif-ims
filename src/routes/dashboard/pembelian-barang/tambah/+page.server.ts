@@ -17,7 +17,7 @@ export const actions: Actions = {
 		const form = await superValidate(event, zod(PembelianBarangSchema))
 
 		if (!form.valid) {
-			fail(400, {
+			return fail(400, {
 				form,
 				message: ''
 			})
@@ -34,26 +34,19 @@ export const actions: Actions = {
 			tanggalPembelian
 		} = form.data
 
-		try {
-			await db.pembelianBarang.create({
-				data: {
-					hargaBeli,
-					hargaJual,
-					idPembelian,
-					jumlah,
-					kodeTransaksiPembelian,
-					namaBarangId,
-					supplierBarangId,
-					tanggalPembelian
-				}
-			})
+		await db.pembelianBarang.create({
+			data: {
+				hargaBeli,
+				hargaJual,
+				idPembelian,
+				jumlah,
+				kodeTransaksiPembelian,
+				namaBarangId,
+				supplierBarangId,
+				tanggalPembelian
+			}
+		})
 
-			redirect(303, '/dashboard/pembelian-barang')
-		} catch {
-			fail(500, {
-				form,
-				message: 'Something went wrong!'
-			})
-		}
+		redirect(303, '/dashboard/pembelian-barang')
 	}
 }

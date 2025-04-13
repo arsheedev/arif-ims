@@ -14,7 +14,7 @@ export const actions: Actions = {
 		const form = await superValidate(event, zod(SatuanBarangSchema))
 
 		if (!form.valid) {
-			fail(400, {
+			return fail(400, {
 				form,
 				message: ''
 			})
@@ -22,15 +22,8 @@ export const actions: Actions = {
 
 		const { idSatuan, namaSatuan } = form.data
 
-		try {
-			await db.satuanBarang.create({ data: { idSatuan, namaSatuan } })
+		await db.satuanBarang.create({ data: { idSatuan, namaSatuan } })
 
-			redirect(303, '/dashboard/satuan-barang')
-		} catch {
-			fail(500, {
-				form,
-				message: 'Something went wrong!'
-			})
-		}
+		redirect(303, '/dashboard/satuan-barang')
 	}
 }
