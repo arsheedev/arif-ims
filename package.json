@@ -59,6 +59,7 @@
 		"jsonwebtoken": "^9.0.2",
 		"mode-watcher": "^0.4.1",
 		"sharp": "^0.33.5",
+		"svelte-headless-table": "^0.18.3",
 		"svelte-sonner": "^0.3.28"
 	}
 }

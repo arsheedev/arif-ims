@@ -6,10 +6,17 @@ import { zod } from 'sveltekit-superforms/adapters'
 import type { PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async ({ url }) => {
-	const id = Number(url.searchParams.get('id'))
-	const namaBarang = await db.namaBarang.findUnique({ where: { id } })
+	const id = Number(url.searchParams.get('id')) // Ambil id dari URL
+	const namaBarang = await db.namaBarang.findUnique({ where: { id } }) // Ambil data berdasarkan id
 
-	return { namaBarang, form: await superValidate(zod(NamaBarangSchema)) }
+	if (!namaBarang) {
+		throw redirect(303, '/dashboard/nama-barang') // Redirect jika tidak ditemukan
+	}
+
+	return {
+		namaBarang,
+		form: await superValidate(namaBarang, zod(NamaBarangSchema)) // Validasi data menggunakan Zod
+	}
 }
 
 export const actions: Actions = {
@@ -17,24 +24,20 @@ export const actions: Actions = {
 		const form = await superValidate(event, zod(NamaBarangSchema))
 
 		if (!form.valid) {
-			fail(400, {
-				form,
-				message: ''
-			})
+			return fail(400, { form, message: 'Form is invalid' }) // Validasi form
 		}
 
 		const id = Number(event.url.searchParams.get('id'))
 		const { idDaftarBarang, namaBarang } = form.data
 
 		try {
-			await db.namaBarang.update({ where: { id }, data: { idDaftarBarang, namaBarang } })
-
-			redirect(303, '/dashboard/nama-barang')
-		} catch {
-			fail(500, {
-				form,
-				message: 'Something went wrong!'
+			await db.namaBarang.update({
+				where: { id },
+				data: { idDaftarBarang, namaBarang }
 			})
+			return redirect(303, '/dashboard/nama-barang') // Redirect setelah sukses
+		} catch {
+			return fail(500, { form, message: 'Something went wrong!' }) // Error handling
 		}
 	}
 }

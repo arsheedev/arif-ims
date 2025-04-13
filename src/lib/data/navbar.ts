@@ -66,7 +66,7 @@ export const userNavMenu: AdminNavMenutype = [
 		items: [
 			{
 				title: 'Data Barang',
-				url: '/admin/data-barang'
+				url: '/dashboard/nama-barang'
 			},
 			{
 				title: 'Data Produk',
