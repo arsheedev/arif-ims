@@ -7,5 +7,12 @@
 </script>
 
 <div class="flex justify-center">
-	<FormTambahProduk data={data.form} message={form?.message} />
+	<FormTambahProduk
+		data={data.form}
+		kategoriBarang={data.kategoriBarang}
+		namaBarang={data.namaBarang}
+		satuanBarang={data.satuanBarang}
+		supplierBarang={data.supplierBarang}
+		message={form?.message}
+	/>
 </div>

@@ -3,3 +3,5 @@
 
 	let { data }: { data: PageData } = $props()
 </script>
+
+<pre>{JSON.stringify(data.produk, null, 2)}</pre>

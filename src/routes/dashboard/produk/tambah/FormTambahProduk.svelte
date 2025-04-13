@@ -4,14 +4,22 @@
 	import { Input } from '$lib/components/ui/input'
 	import * as Select from '$lib/components/ui/select'
 	import ProdukSchema from '$lib/schemas/produk-schema'
+	import type { KategoriBarang, NamaBarang, SatuanBarang, SupplierBarang } from '@prisma/client'
 	import { toast } from 'svelte-sonner'
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 
-	let {
-		data,
-		message
-	}: { data: SuperValidated<Infer<typeof ProdukSchema>>; message: string | undefined } = $props()
+	interface PropsInterface {
+		data: SuperValidated<Infer<typeof ProdukSchema>>
+		supplierBarang: SupplierBarang[]
+		namaBarang: NamaBarang[]
+		kategoriBarang: KategoriBarang[]
+		satuanBarang: SatuanBarang[]
+		message: string | undefined
+	}
+
+	let { data, supplierBarang, kategoriBarang, namaBarang, satuanBarang, message }: PropsInterface =
+		$props()
 
 	const form = superForm(data, {
 		validators: zodClient(ProdukSchema),
@@ -49,12 +57,12 @@
 				<Select.Root type="single" bind:value={$formData.supplierBarangId} name={props.name}>
 					<Select.Trigger {...props}>
 						{$formData.supplierBarangId
-							? data.supplierBarang.find((s) => s.id === $formData.supplierBarangId)?.nama
+							? supplierBarang.find((s) => s.id === $formData.supplierBarangId)?.nama
 							: 'Pilih supplier...'}
 					</Select.Trigger>
 					<Select.Content>
-						{#each data.supplierBarang as supplier}
-							<Select.Item value={supplier.id} label={supplier.nama} />
+						{#each supplierBarang as supplier}
+							<Select.Item value={String(supplier.id)} label={supplier.nama} />
 						{/each}
 					</Select.Content>
 				</Select.Root>
@@ -70,11 +78,11 @@
 				<Select.Root type="single" bind:value={$formData.namaBarangId} name={props.name}>
 					<Select.Trigger {...props}>
 						{$formData.namaBarangId
-							? data.namaBarang.find((n) => n.id === $formData.namaBarangId)?.namaBarang
+							? namaBarang.find((n) => n.id === $formData.namaBarangId)?.namaBarang
 							: 'Pilih nama barang...'}
 					</Select.Trigger>
 					<Select.Content>
-						{#each data.namaBarang as barang}
+						{#each namaBarang as barang}
 							<Select.Item value={barang.id} label={barang.namaBarang} />
 						{/each}
 					</Select.Content>
@@ -91,11 +99,11 @@
 				<Select.Root type="single" bind:value={$formData.kategoriBarangId} name={props.name}>
 					<Select.Trigger {...props}>
 						{$formData.kategoriBarangId
-							? data.kategoriBarang.find((k) => k.id === $formData.kategoriBarangId)?.namaKategori
+							? kategoriBarang.find((k) => k.id === $formData.kategoriBarangId)?.namaKategori
 							: 'Pilih kategori...'}
 					</Select.Trigger>
 					<Select.Content>
-						{#each data.kategoriBarang as kategori}
+						{#each kategoriBarang as kategori}
 							<Select.Item value={kategori.id} label={kategori.namaKategori} />
 						{/each}
 					</Select.Content>
@@ -112,11 +120,11 @@
 				<Select.Root type="single" bind:value={$formData.satuanBarangId} name={props.name}>
 					<Select.Trigger {...props}>
 						{$formData.satuanBarangId
-							? data.satuanBarang.find((s) => s.id === $formData.satuanBarangId)?.namaSatuan
+							? satuanBarang.find((s) => s.id === $formData.satuanBarangId)?.namaSatuan
 							: 'Pilih satuan...'}
 					</Select.Trigger>
 					<Select.Content>
-						{#each data.satuanBarang as satuan}
+						{#each satuanBarang as satuan}
 							<Select.Item value={satuan.id} label={satuan.namaSatuan} />
 						{/each}
 					</Select.Content>

@@ -3,7 +3,9 @@ import type { Actions } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async () => {
-	const produk = await db.produk.findMany()
+	const produk = await db.produk.findMany({
+		include: { barang: true, kategori: true, satuan: true, supplier: true }
+	})
 
 	return { produk }
 }
