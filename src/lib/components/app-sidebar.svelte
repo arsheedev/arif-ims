@@ -5,6 +5,7 @@
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js'
 	import { type AdminNavMenutype } from '$lib/data/navbar'
 	import type { ComponentProps } from 'svelte'
+	import { Button } from '$lib/components/ui/button'
 
 	interface UserInterface {
 		name: string
@@ -29,6 +30,9 @@
 		<TeamSwitcher />
 	</Sidebar.Header>
 	<Sidebar.Content>
+		<div class="px-4 py-2">
+			<Button class="w-full">Tambah Produk</Button>
+		</div>
 		<NavMain items={navMenu} />
 	</Sidebar.Content>
 	<Sidebar.Footer>

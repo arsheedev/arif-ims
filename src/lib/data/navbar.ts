@@ -86,11 +86,11 @@ export const userNavMenu: AdminNavMenutype = [
 			},
 			{
 				title: 'Data Satuan',
-				url: '/admin/data-satuan'
+				url: '/dashboard/satuan-barang'
 			},
 			{
 				title: 'Data Supplier',
-				url: '/admin/data-supplier'
+				url: '/dashboard/supplier-barang'
 			}
 		]
 	},
