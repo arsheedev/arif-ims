@@ -3,67 +3,106 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id              String           @id @default(cuid())
-  name            String
-  username        String           @unique
-  password        String           @db.Text
-  role            Role             @default(USER)
-  verified        Boolean          @default(false)
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  waliSantri      Santri?
-  needToPay       Payment[]        @relation(name: "UserNeedToPay")
-  hasPayed        Payment[]        @relation(name: "UserHasPayed")
-  paymentReceipts PaymentReceipt[]
-}
-
-model Santri {
-  id        String   @id @default(cuid())
+  id        Int      @id @default(autoincrement())
   name      String
+  username  String   @unique
+  password  String   @db.Text
+  role      Role     @default(OWNER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  wali      User     @relation(fields: [waliId], references: [id], onDelete: Cascade)
-  waliId    String   @unique
 }
 
-model Payment {
-  id              String           @id @default(cuid())
-  name            String
-  price           Int              @default(0)
-  deadline        DateTime
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  userNeedToPay   User[]           @relation(name: "UserNeedToPay")
-  userHasPayed    User[]           @relation(name: "UserHasPayed")
-  paymentReceipts PaymentReceipt[]
+model NamaBarang {
+  id              Int               @id @default(autoincrement())
+  idDaftarBarang  String            @unique @db.VarChar(255)
+  namaBarang      String
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  Produk          Produk[]
+  PembelianBarang PembelianBarang[]
+  PenjualanBarang PenjualanBarang[]
 }
 
-model PaymentReceipt {
-  id         String        @id @default(cuid())
-  imageUrl   String        @db.Text
-  status     PaymentStatus @default(DIPROSES)
-  acceptedAt DateTime?
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
-  User       User?         @relation(fields: [userId], references: [id])
-  userId     String?
-  Payment    Payment?      @relation(fields: [paymentId], references: [id])
-  paymentId  String?
+model SatuanBarang {
+  id         Int      @id @default(autoincrement())
+  idSatuan   String   @unique @db.VarChar(255)
+  namaSatuan String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  Produk     Produk[]
+}
+
+model KategoriBarang {
+  id           Int      @id @default(autoincrement())
+  idKategori   String   @unique @db.VarChar(255)
+  namaKategori String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  Produk       Produk[]
+}
+
+model SupplierBarang {
+  id              Int               @id @default(autoincrement())
+  idSupplier      String            @unique @db.VarChar(255)
+  nama            String            @db.Text
+  alamat          String            @db.Text
+  noTelepon       String            @db.Text
+  noFax           String?
+  email           String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  Produk          Produk[]
+  PembelianBarang PembelianBarang[]
+}
+
+model Produk {
+  id               Int            @id @default(autoincrement())
+  idProduk         String         @unique @db.VarChar(255)
+  supplier         SupplierBarang @relation(fields: [supplierBarangId], references: [id])
+  supplierBarangId Int
+  barang           NamaBarang     @relation(fields: [namaBarangId], references: [id])
+  namaBarangId     Int
+  kategori         KategoriBarang @relation(fields: [kategoriBarangId], references: [id])
+  kategoriBarangId Int
+  satuan           SatuanBarang   @relation(fields: [satuanBarangId], references: [id])
+  satuanBarangId   Int
+  hargaBeli        Int            @default(0)
+  hargaJual        Int            @default(0)
+  keterangan       String?        @db.LongText
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model PembelianBarang {
+  id                     Int            @id @default(autoincrement())
+  idPembelian            String         @unique @db.VarChar(255)
+  kodeTransaksiPembelian String         @unique @db.VarChar(255)
+  namaBarang             NamaBarang     @relation(fields: [namaBarangId], references: [id])
+  namaBarangId           Int
+  tanggalPembelian       DateTime       @default(now())
+  supplier               SupplierBarang @relation(fields: [supplierBarangId], references: [id])
+  supplierBarangId       Int
+  jumlah                 Int            @default(0)
+  hargaBeli              Int            @default(0)
+  hargaJual              Int            @default(0)
+}
+
+model PenjualanBarang {
+  id                     Int        @id @default(autoincrement())
+  idPenjualan            String     @unique @db.VarChar(255)
+  kodeTransaksiPenjualan String     @unique @db.VarChar(255)
+  namaBarang             NamaBarang @relation(fields: [namaBarangId], references: [id])
+  namaBarangId           Int
+  tanggalPenjualan       DateTime   @default(now())
+  jumlah                 Int        @default(0)
 }
 
 enum Role {
-  USER
+  OWNER
   ADMIN
-}
-
-enum PaymentStatus {
-  DIPROSES
-  DIBAYAR
-  GAGAL
-  DIBATALKAN
 }
