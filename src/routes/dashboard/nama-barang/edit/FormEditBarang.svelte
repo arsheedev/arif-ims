@@ -7,12 +7,11 @@
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 
-	export let data: SuperValidated<Infer<typeof NamaBarangSchema>> // Data yang diterima dari server
-	export let message: string | undefined // Pesan error atau sukses
+	export let data: SuperValidated<Infer<typeof NamaBarangSchema>>
+	export let message: string | undefined
 
 	let loading = false
 
-	// Menggunakan superform untuk menangani form
 	const form = superForm(data, {
 		validators: zodClient(NamaBarangSchema),
 		onSubmit() {
@@ -20,10 +19,6 @@
 		},
 		onResult({ result }) {
 			loading = false
-
-			// Log hasil response dari backend
-			console.log('Hasil response:', result)
-
 			if (result.type === 'failure') {
 				toast.error(result.data?.message || 'Terjadi kesalahan validasi.')
 			} else if (result.type === 'success') {
