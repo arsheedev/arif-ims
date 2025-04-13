@@ -31,7 +31,7 @@
 	</Sidebar.Header>
 	<Sidebar.Content>
 		<div class="px-4 py-2">
-			<Button class="w-full">Tambah Produk</Button>
+			<Button href="/dashboard/produk/tambah" class="w-full">Tambah Produk</Button>
 		</div>
 		<NavMain items={navMenu} />
 	</Sidebar.Content>
