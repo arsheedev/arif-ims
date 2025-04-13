@@ -24,13 +24,22 @@ export const actions: Actions = {
 		const form = await superValidate(event, zod(PembelianBarangSchema))
 
 		if (!form.valid) {
-			fail(400, {
+			return fail(400, {
 				form,
 				message: ''
 			})
 		}
 
 		const id = Number(event.url.searchParams.get('id'))
+		const existingData = await db.pembelianBarang.findUnique({ where: { id } })
+
+		if (!existingData) {
+			return fail(404, {
+				form,
+				message: 'Data tidak ditemukan!'
+			})
+		}
+
 		const {
 			hargaBeli,
 			hargaJual,
@@ -42,27 +51,20 @@ export const actions: Actions = {
 			tanggalPembelian
 		} = form.data
 
-		try {
-			await db.pembelianBarang.update({
-				where: { id },
-				data: {
-					hargaBeli,
-					hargaJual,
-					idPembelian,
-					jumlah,
-					kodeTransaksiPembelian,
-					namaBarangId,
-					supplierBarangId,
-					tanggalPembelian
-				}
-			})
+		await db.pembelianBarang.update({
+			where: { id: existingData.id },
+			data: {
+				hargaBeli,
+				hargaJual,
+				idPembelian,
+				jumlah,
+				kodeTransaksiPembelian,
+				namaBarangId,
+				supplierBarangId,
+				tanggalPembelian
+			}
+		})
 
-			redirect(303, '/dashboard/pembelian-barang')
-		} catch {
-			fail(500, {
-				form,
-				message: 'Something went wrong!'
-			})
-		}
+		redirect(303, '/dashboard/pembelian-barang')
 	}
 }

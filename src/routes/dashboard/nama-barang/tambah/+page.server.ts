@@ -22,15 +22,8 @@ export const actions: Actions = {
 
 		const { idDaftarBarang, namaBarang } = form.data
 
-		try {
-			await db.namaBarang.create({ data: { idDaftarBarang, namaBarang } })
+		await db.namaBarang.create({ data: { idDaftarBarang, namaBarang } })
 
-			redirect(303, '/dashboard/nama-barang')
-		} catch {
-			fail(500, {
-				form,
-				message: 'Something went wrong!'
-			})
-		}
+		redirect(303, '/dashboard/nama-barang')
 	}
 }
