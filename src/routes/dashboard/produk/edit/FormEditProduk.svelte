@@ -9,23 +9,30 @@
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms'
 	import { zodClient } from 'sveltekit-superforms/adapters'
 
-	interface PropsInterface {
+	interface Props {
 		data: SuperValidated<Infer<typeof ProdukSchema>>
 		supplierBarang: SupplierBarang[]
 		namaBarang: NamaBarang[]
 		kategoriBarang: KategoriBarang[]
 		satuanBarang: SatuanBarang[]
-		message: string | undefined
+		message?: string
 	}
 
-	let { data, supplierBarang, kategoriBarang, namaBarang, satuanBarang, message }: PropsInterface =
-		$props()
+	const {
+		data,
+		supplierBarang = [],
+		namaBarang = [],
+		kategoriBarang = [],
+		satuanBarang = [],
+		message
+	} = $props<Props>()
 
 	const form = superForm(data, {
 		validators: zodClient(ProdukSchema),
+		resetForm: false,
 		onUpdated: ({ form: f }) => {
 			if (f.valid) {
-				toast.success('Data produk berhasil diedit')
+				toast.success('Data produk berhasil diperbarui')
 			} else {
 				toast.error('Silakan perbaiki kesalahan dalam form')
 			}
@@ -42,124 +49,108 @@
 >
 	<Form.Field {form} name="idProduk">
 		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>ID Produk</Form.Label>
-				<Input {...props} bind:value={$formData.idProduk} />
-			{/snippet}
+			<Form.Label>ID Produk</Form.Label>
+			<Input name="idProduk" bind:value={$formData.idProduk} />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 
 	<Form.Field {form} name="supplierBarangId">
 		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Supplier Barang</Form.Label>
-				<Select.Root type="single" bind:value={$formData.supplierBarangId} name={props.name}>
-					<Select.Trigger {...props}>
-						{$formData.supplierBarangId
-							? supplierBarang.find((s) => s.id === $formData.supplierBarangId)?.nama
-							: 'Pilih supplier...'}
-					</Select.Trigger>
-					<Select.Content>
-						{#each supplierBarang as supplier}
-							<Select.Item value={String(supplier.id)} label={supplier.nama} />
-						{/each}
-					</Select.Content>
-				</Select.Root>
-			{/snippet}
+			<Form.Label>Supplier Barang</Form.Label>
+			<Select.Root type="single" bind:value={$formData.supplierBarangId} name="supplierBarangId">
+				<Select.Trigger>
+					{$formData.supplierBarangId
+						? supplierBarang.find((s) => s.id === $formData.supplierBarangId)?.nama
+						: 'Pilih supplier...'}
+				</Select.Trigger>
+				<Select.Content>
+					{#each supplierBarang as supplier}
+						<Select.Item value={String(supplier.id)} label={supplier.nama} />
+					{/each}
+				</Select.Content>
+			</Select.Root>
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 
 	<Form.Field {form} name="namaBarangId">
 		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Nama Barang</Form.Label>
-				<Select.Root type="single" bind:value={$formData.namaBarangId} name={props.name}>
-					<Select.Trigger {...props}>
-						{$formData.namaBarangId
-							? namaBarang.find((n) => n.id === $formData.namaBarangId)?.namaBarang
-							: 'Pilih nama barang...'}
-					</Select.Trigger>
-					<Select.Content>
-						{#each namaBarang as barang}
-							<Select.Item value={barang.id} label={barang.namaBarang} />
-						{/each}
-					</Select.Content>
-				</Select.Root>
-			{/snippet}
+			<Form.Label>Nama Barang</Form.Label>
+			<Select.Root type="single" bind:value={$formData.namaBarangId} name="namaBarangId">
+				<Select.Trigger>
+					{$formData.namaBarangId
+						? namaBarang.find((n) => n.id === $formData.namaBarangId)?.namaBarang
+						: 'Pilih nama barang...'}
+				</Select.Trigger>
+				<Select.Content>
+					{#each namaBarang as barang}
+						<Select.Item value={barang.id} label={barang.namaBarang} />
+					{/each}
+				</Select.Content>
+			</Select.Root>
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 
 	<Form.Field {form} name="kategoriBarangId">
 		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Kategori Barang</Form.Label>
-				<Select.Root type="single" bind:value={$formData.kategoriBarangId} name={props.name}>
-					<Select.Trigger {...props}>
-						{$formData.kategoriBarangId
-							? kategoriBarang.find((k) => k.id === $formData.kategoriBarangId)?.namaKategori
-							: 'Pilih kategori...'}
-					</Select.Trigger>
-					<Select.Content>
-						{#each kategoriBarang as kategori}
-							<Select.Item value={kategori.id} label={kategori.namaKategori} />
-						{/each}
-					</Select.Content>
-				</Select.Root>
-			{/snippet}
+			<Form.Label>Kategori Barang</Form.Label>
+			<Select.Root type="single" bind:value={$formData.kategoriBarangId} name="kategoriBarangId">
+				<Select.Trigger>
+					{$formData.kategoriBarangId
+						? kategoriBarang.find((k) => k.id === $formData.kategoriBarangId)?.namaKategori
+						: 'Pilih kategori...'}
+				</Select.Trigger>
+				<Select.Content>
+					{#each kategoriBarang as kategori}
+						<Select.Item value={kategori.id} label={kategori.namaKategori} />
+					{/each}
+				</Select.Content>
+			</Select.Root>
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 
 	<Form.Field {form} name="satuanBarangId">
 		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Satuan Barang</Form.Label>
-				<Select.Root type="single" bind:value={$formData.satuanBarangId} name={props.name}>
-					<Select.Trigger {...props}>
-						{$formData.satuanBarangId
-							? satuanBarang.find((s) => s.id === $formData.satuanBarangId)?.namaSatuan
-							: 'Pilih satuan...'}
-					</Select.Trigger>
-					<Select.Content>
-						{#each satuanBarang as satuan}
-							<Select.Item value={satuan.id} label={satuan.namaSatuan} />
-						{/each}
-					</Select.Content>
-				</Select.Root>
-			{/snippet}
+			<Form.Label>Satuan Barang</Form.Label>
+			<Select.Root type="single" bind:value={$formData.satuanBarangId} name="satuanBarangId">
+				<Select.Trigger>
+					{$formData.satuanBarangId
+						? satuanBarang.find((s) => s.id === $formData.satuanBarangId)?.namaSatuan
+						: 'Pilih satuan...'}
+				</Select.Trigger>
+				<Select.Content>
+					{#each satuanBarang as satuan}
+						<Select.Item value={satuan.id} label={satuan.namaSatuan} />
+					{/each}
+				</Select.Content>
+			</Select.Root>
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 
 	<Form.Field {form} name="hargaBeli">
 		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Harga Beli</Form.Label>
-				<Input type="number" {...props} bind:value={$formData.hargaBeli} />
-			{/snippet}
+			<Form.Label>Harga Beli</Form.Label>
+			<Input type="number" name="hargaBeli" bind:value={$formData.hargaBeli} />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 
 	<Form.Field {form} name="hargaJual">
 		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Harga Jual</Form.Label>
-				<Input type="number" {...props} bind:value={$formData.hargaJual} />
-			{/snippet}
+			<Form.Label>Harga Jual</Form.Label>
+			<Input type="number" name="hargaJual" bind:value={$formData.hargaJual} />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 
 	<Form.Field {form} name="keterangan">
 		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Keterangan (Opsional)</Form.Label>
-				<Input {...props} bind:value={$formData.keterangan} />
-			{/snippet}
+			<Form.Label>Keterangan (Opsional)</Form.Label>
+			<Input name="keterangan" bind:value={$formData.keterangan} />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
@@ -170,6 +161,6 @@
 
 	<div class="space-x-2 self-end pt-4">
 		<a href="/dashboard/produk" class={buttonVariants({ variant: 'secondary' })}>Kembali</a>
-		<Form.Button>Simpan</Form.Button>
+		<Form.Button>Simpan Perubahan</Form.Button>
 	</div>
 </form>
