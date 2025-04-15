@@ -15,7 +15,7 @@
 
 	<div class="table-header">
 		<div class="left-toolbar">
-			<Button href="/dashboard/data-produk/tambah">
+			<Button href="/dashboard/produk/tambah">
 				<Plus class="icon" />
 				<span>Data Baru</span>
 			</Button>
