@@ -7,8 +7,8 @@ const PembelianBarangSchema = z.object({
 	tanggalPembelian: z.coerce.date({ message: 'Tanggal pembelian diperlukan!' }),
 	supplierBarangId: z.coerce.number({ message: 'ID supplier barang diperlukan!' }),
 	jumlah: z.coerce.number({ message: 'Jumbal barang pembelian diperlukan!' }),
-	hargaBeli: z.coerce.number({ message: 'Harga beli diperlukan!' }),
-	hargaJual: z.coerce.number({ message: 'Harga jual diperlukan!' })
+	biayaPesan: z.coerce.number({ message: 'Harga beli diperlukan!' }),
+	biayaSimpan: z.coerce.number({ message: 'Harga jual diperlukan!' })
 })
 
 export default PembelianBarangSchema

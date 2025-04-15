@@ -1,3 +1,0 @@
-1. Verify user payment receipt on admin side
-2. Add style to all ui pages (still using default style cuz i'm lazy :v)
-3. The user still can pay the payment even the deadline has beed due (need to fix this but not crucial at this moment)

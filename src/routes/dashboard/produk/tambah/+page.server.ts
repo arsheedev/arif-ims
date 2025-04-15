@@ -32,8 +32,6 @@ export const actions: Actions = {
 		}
 
 		const {
-			hargaBeli,
-			hargaJual,
 			idProduk,
 			kategoriBarangId,
 			namaBarangId,
@@ -44,8 +42,6 @@ export const actions: Actions = {
 
 		await db.produk.create({
 			data: {
-				hargaBeli,
-				hargaJual,
 				idProduk,
 				kategoriBarangId,
 				namaBarangId,
