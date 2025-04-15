@@ -45,8 +45,6 @@ export const actions: Actions = {
 		}
 
 		const {
-			hargaBeli,
-			hargaJual,
 			idProduk,
 			kategoriBarangId,
 			namaBarangId,
@@ -58,8 +56,6 @@ export const actions: Actions = {
 		await db.produk.update({
 			where: { id: existingData.id },
 			data: {
-				hargaBeli,
-				hargaJual,
 				idProduk,
 				kategoriBarangId,
 				namaBarangId,

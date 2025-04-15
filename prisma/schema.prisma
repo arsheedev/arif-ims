@@ -71,8 +71,6 @@ model Produk {
   kategoriBarangId Int
   satuan           SatuanBarang   @relation(fields: [satuanBarangId], references: [id])
   satuanBarangId   Int
-  hargaBeli        Int            @default(0)
-  hargaJual        Int            @default(0)
   keterangan       String?        @db.LongText
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
@@ -88,8 +86,8 @@ model PembelianBarang {
   supplier               SupplierBarang    @relation(fields: [supplierBarangId], references: [id])
   supplierBarangId       Int
   jumlah                 Int               @default(0)
-  hargaBeli              Int               @default(0)
-  hargaJual              Int               @default(0)
+  biayaPesan             Int               @default(0)
+  biayaSimpan            Int               @default(0)
   PenguranganStok        PenguranganStok[]
 }
 

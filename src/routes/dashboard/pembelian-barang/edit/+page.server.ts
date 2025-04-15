@@ -41,21 +41,21 @@ export const actions: Actions = {
 		}
 
 		const {
-			hargaBeli,
-			hargaJual,
 			idPembelian,
 			jumlah,
 			kodeTransaksiPembelian,
 			namaBarangId,
 			supplierBarangId,
-			tanggalPembelian
+			tanggalPembelian,
+			biayaPesan,
+			biayaSimpan
 		} = form.data
 
 		await db.pembelianBarang.update({
 			where: { id: existingData.id },
 			data: {
-				hargaBeli,
-				hargaJual,
+				biayaPesan,
+				biayaSimpan,
 				idPembelian,
 				jumlah,
 				kodeTransaksiPembelian,
