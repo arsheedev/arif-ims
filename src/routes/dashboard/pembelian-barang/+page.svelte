@@ -35,8 +35,8 @@
 					<Table.Head>Supplier</Table.Head>
 					<Table.Head>Tanggal Pembelian</Table.Head>
 					<Table.Head>Jumlah Stok</Table.Head>
-					<Table.Head>Harga Beli</Table.Head>
-					<Table.Head>Harga Jual</Table.Head>
+					<Table.Head>Biaya Pesan</Table.Head>
+					<Table.Head>Biaya Simpan</Table.Head>
 					<Table.Head>Aksi</Table.Head>
 				</Table.Row>
 			</Table.Header>
@@ -56,19 +56,19 @@
 							<Table.Cell>{item.tanggalPembelian?.toLocaleDateString('id-ID') || '-'}</Table.Cell>
 							<Table.Cell>{item.jumlah}</Table.Cell>
 							<Table.Cell>
-								{item.hargaBeli
+								{item.biayaPesan
 									? new Intl.NumberFormat('id-ID', {
 											style: 'currency',
 											currency: 'IDR'
-										}).format(item.hargaBeli)
+										}).format(item.biayaPesan)
 									: '-'}
 							</Table.Cell>
 							<Table.Cell>
-								{item.hargaJual
+								{item.biayaSimpan
 									? new Intl.NumberFormat('id-ID', {
 											style: 'currency',
 											currency: 'IDR'
-										}).format(item.hargaJual)
+										}).format(item.biayaSimpan)
 									: '-'}
 							</Table.Cell>
 							<Table.Cell>
@@ -76,12 +76,12 @@
 									<Button
 										size="sm"
 										variant="outline"
-										href={`/dashboard/pembelian-barang/edit/${item.idPembelian}`}
+										href={`/dashboard/pembelian-barang/edit?id=${item.id}`}
 									>
 										Edit
 									</Button>
-									<form method="POST" action="?/delete" use:enhance>
-										<input type="hidden" name="idPembelian" value={item.idPembelian} />
+									<form method="POST" action="?/default" use:enhance>
+										<input type="hidden" name="id" value={item.id} />
 										<Button type="submit" size="sm" variant="destructive">Hapus</Button>
 									</form>
 								</div>

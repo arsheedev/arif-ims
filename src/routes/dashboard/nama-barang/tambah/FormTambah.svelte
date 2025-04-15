@@ -22,7 +22,7 @@
 
 			if (result.type === 'failure') {
 				toast.error(result.data?.message || 'Terjadi kesalahan validasi.')
-			} else if (result.type === 'success') {
+			} else if (result.type === 'redirect') {
 				toast.success('Berhasil menambahkan data!')
 			}
 		},

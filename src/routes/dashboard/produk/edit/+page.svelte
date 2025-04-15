@@ -11,9 +11,7 @@
 			namaBarangId: data.produk.namaBarangId,
 			kategoriBarangId: data.produk.kategoriBarangId,
 			satuanBarangId: data.produk.satuanBarangId,
-			hargaBeli: data.produk.hargaBeli,
-			hargaJual: data.produk.hargaJual,
-			keterangan: data.produk.keterangan
+			keterangan: data.produk.keterangan || undefined
 		}
 	}
 </script>
