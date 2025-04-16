@@ -134,26 +134,6 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Field {form} name="hargaBeli">
-		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Harga Beli</Form.Label>
-				<Input type="number" {...props} bind:value={$formData.hargaBeli} />
-			{/snippet}
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
-
-	<Form.Field {form} name="hargaJual">
-		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Harga Jual</Form.Label>
-				<Input type="number" {...props} bind:value={$formData.hargaJual} />
-			{/snippet}
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
-
 	<Form.Field {form} name="keterangan">
 		<Form.Control>
 			{#snippet children({ props })}

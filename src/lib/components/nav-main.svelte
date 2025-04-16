@@ -18,14 +18,14 @@
 	<Sidebar.GroupLabel>Main Menu</Sidebar.GroupLabel>
 	<div class="mb-6 mt-4 space-y-2 px-3">
 		<Button
-			href="/dashboard/pembelian-barang"
+			href="/dashboard/pembelian-barang/tambah"
 			class="flex w-full items-center gap-2 bg-green-600 text-white hover:bg-green-700"
 		>
 			<ShoppingCart class="h-4 w-4" />
 			Tambah Pembelian
 		</Button>
 		<Button
-			href="/dashboard/penjualan-barang"
+			href="/dashboard/penjualan-barang/tambah"
 			class="flex w-full items-center gap-2 bg-blue-600 text-white hover:bg-blue-700"
 		>
 			<HandCoins class="h-4 w-4" />

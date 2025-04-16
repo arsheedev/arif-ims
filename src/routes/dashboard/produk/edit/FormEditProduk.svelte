@@ -131,22 +131,6 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Field {form} name="hargaBeli">
-		<Form.Control>
-			<Form.Label>Harga Beli</Form.Label>
-			<Input type="number" name="hargaBeli" bind:value={$formData.hargaBeli} />
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
-
-	<Form.Field {form} name="hargaJual">
-		<Form.Control>
-			<Form.Label>Harga Jual</Form.Label>
-			<Input type="number" name="hargaJual" bind:value={$formData.hargaJual} />
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
-
 	<Form.Field {form} name="keterangan">
 		<Form.Control>
 			<Form.Label>Keterangan (Opsional)</Form.Label>

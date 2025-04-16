@@ -74,7 +74,7 @@ export const userNavMenu: AdminNavMenutype = [
 			},
 			{
 				title: 'Data Pembelian',
-				url: '/admin/data-pembelian'
+				url: '/dashboard/pembelian-barang'
 			},
 			{
 				title: 'Data Penjual',
