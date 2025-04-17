@@ -8,7 +8,7 @@
 	import type { PenjualanBarang, NamaBarang, SupplierBarang } from '@prisma/client'
 
 	let { data }: { data: PageData } = $props()
-	let search = ''
+	let search = $state()
 </script>
 
 <div class="container">
