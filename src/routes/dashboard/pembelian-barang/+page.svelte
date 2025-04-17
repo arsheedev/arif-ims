@@ -80,7 +80,7 @@
 									>
 										Edit
 									</Button>
-									<form method="POST" action="?/default" use:enhance>
+									<form method="POST" use:enhance>
 										<input type="hidden" name="id" value={item.id} />
 										<Button type="submit" size="sm" variant="destructive">Hapus</Button>
 									</form>

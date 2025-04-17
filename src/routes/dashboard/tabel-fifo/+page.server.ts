@@ -6,26 +6,46 @@ export const load: PageServerLoad = async () => {
 		include: {
 			PembelianBarang: {
 				include: {
-					PenguranganStok: true
+					PenguranganStok: true,
+					namaBarang: true,
+					supplier: true
+				},
+				orderBy: {
+					tanggalPembelian: 'asc'
 				}
 			}
 		}
 	})
 
 	const stokBarang = namaBarangList.map((barang) => {
-		let totalDibeli = 0
-		let totalDijual = 0
+		const pembelianDetails = barang.PembelianBarang.map((pembelian) => {
+			const totalTerjual = pembelian.PenguranganStok.reduce((sum, ps) => sum + ps.jumlahDiambil, 0)
+			const stokTersisa = pembelian.jumlah - totalTerjual
 
-		for (const pembelian of barang.PembelianBarang) {
-			totalDibeli += pembelian.jumlah
-			const totalKurang = pembelian.PenguranganStok.reduce((sum, ps) => sum + ps.jumlahDiambil, 0)
-			totalDijual += totalKurang
-		}
+			return {
+				idPembelian: pembelian.id,
+				kodeTransaksi: pembelian.kodeTransaksiPembelian,
+				tanggalPembelian: pembelian.tanggalPembelian,
+				jumlahAwal: pembelian.jumlah,
+				jumlahTerjual: totalTerjual,
+				stokTersisa: stokTersisa,
+				biayaPesan: pembelian.biayaPesan,
+				biayaSimpan: pembelian.biayaSimpan
+			}
+		})
+
+		const totalStok = pembelianDetails.reduce((sum, p) => sum + p.stokTersisa, 0)
+		const totalDibeli = pembelianDetails.reduce((sum, p) => sum + p.jumlahAwal, 0)
+		const totalDijual = pembelianDetails.reduce((sum, p) => sum + p.jumlahTerjual, 0)
 
 		return {
-			namaBarang: barang.namaBarang,
 			idDaftarBarang: barang.idDaftarBarang,
-			stokTersisa: totalDibeli - totalDijual
+			namaBarang: barang.namaBarang,
+			stokTersisa: totalStok,
+			totalStok,
+			totalDibeli,
+			totalDijual,
+			pembelianDetails
 		}
 	})
 
