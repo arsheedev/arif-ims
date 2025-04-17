@@ -5,7 +5,6 @@
 	import Plus from 'lucide-svelte/icons/plus'
 	import { enhance } from '$app/forms'
 	import type { PageData } from './$types'
-	import type { PembelianBarang, NamaBarang, SupplierBarang } from '@prisma/client'
 
 	let { data }: { data: PageData } = $props()
 	let search = ''
