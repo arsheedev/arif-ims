@@ -34,7 +34,7 @@ export const userNavMenu: AdminNavMenutype = [
 				url: '/dashboard/pembelian-barang'
 			},
 			{
-				title: 'Data Penjual',
+				title: 'Data Penjualan',
 				url: '/dashboard/penjualan-barang'
 			},
 			{
@@ -68,12 +68,12 @@ export const userNavMenu: AdminNavMenutype = [
 	},
 	{
 		title: 'Perhitungan',
-		url: '/admin/perhitungan',
+		url: '/dashboard/perhitungan',
 		icon: BookOpen,
 		items: [
 			{
 				title: 'Perhitungan EOQ',
-				url: '/admin/perhitungan-eoq'
+				url: '/dashboard/perhitungan-eoq'
 			}
 		]
 	},

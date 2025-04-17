@@ -12,13 +12,13 @@
 </script>
 
 <div class="container">
-	<h2 class="title">Data Pembelian Barang</h2>
+	<h2 class="title">Data Penjualan Barang</h2>
 
 	<div class="table-header">
 		<div class="left-toolbar">
-			<Button href="/dashboard/pembelian-barang/tambah">
+			<Button href="/dashboard/penjualan-barang/tambah">
 				<Plus class="icon" />
-				<span>Tambah Pembelian</span>
+				<span>Tambah Penjualan</span>
 			</Button>
 		</div>
 		<div class="right-search">
