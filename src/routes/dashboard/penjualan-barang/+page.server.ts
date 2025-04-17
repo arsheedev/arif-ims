@@ -3,7 +3,9 @@ import type { Actions } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async () => {
-	const penjualanBarang = await db.penjualanBarang.findMany()
+	const penjualanBarang = await db.penjualanBarang.findMany({
+		include: { namaBarang: true }
+	})
 
 	return { penjualanBarang }
 }
@@ -15,6 +17,6 @@ export const actions: Actions = {
 
 		await db.penjualanBarang.delete({ where: { id } })
 
-		return { message: 'Penjualan barang berhasil dihapus!' }
+		return { message: 'Pembelian barang berhasil dihapus!' }
 	}
 }

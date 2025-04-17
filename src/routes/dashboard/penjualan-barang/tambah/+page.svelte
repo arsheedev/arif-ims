@@ -1,5 +1,11 @@
 <script lang="ts">
-	import type { PageData } from './$types'
+	import type { ActionData, PageData } from './$types'
+	import FormTambahPenjualan from './FormTambahPenjualan.svelte'
 
-	let { data }: { data: PageData } = $props()
+	export let data: PageData
+	export let form: ActionData
 </script>
+
+<div class="flex justify-center">
+	<FormTambahPenjualan data={data.form} namaBarang={data.namaBarang} message={form?.message} />
+</div>

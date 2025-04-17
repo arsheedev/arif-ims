@@ -2,61 +2,18 @@ import BookOpen from 'lucide-svelte/icons/book-open'
 import Bot from 'lucide-svelte/icons/bot'
 import SquareTerminal from 'lucide-svelte/icons/square-terminal'
 import Database from 'lucide-svelte/icons/database'
+import ListOrdered from 'lucide-svelte/icons/list-ordered'
 
 export type AdminNavMenutype = {
 	title: string
 	url: string
-	icon: typeof SquareTerminal | typeof BookOpen | typeof Bot
+	icon: typeof SquareTerminal | typeof BookOpen | typeof Bot | typeof Database | typeof ListOrdered
 	isActive?: boolean
 	items: {
 		title: string
 		url: string
 	}[]
 }[]
-
-export const adminNavMenu: AdminNavMenutype = [
-	{
-		title: 'User',
-		url: '/admin/user',
-		icon: SquareTerminal,
-		items: [
-			{
-				title: 'Semua User',
-				url: '/admin/user'
-			},
-			{
-				title: 'Perlu Verifikasi',
-				url: '/admin/user?verified=false'
-			}
-		]
-	},
-	{
-		title: 'Pembayaran',
-		url: '/admin/pembayaran',
-		icon: Bot,
-		items: [
-			{
-				title: 'Semua Pembayaran',
-				url: '/admin/pembayaran'
-			}
-		]
-	},
-	{
-		title: 'Pembayaran User',
-		url: '/admin/pembayaran-user',
-		icon: BookOpen,
-		items: [
-			{
-				title: 'Histori Pembayaran',
-				url: '/admin/pembayaran-user'
-			},
-			{
-				title: 'Perlu Verifikasi',
-				url: '/admin/pembayaran-user?verified=false'
-			}
-		]
-	}
-]
 
 export const userNavMenu: AdminNavMenutype = [
 	{
@@ -78,7 +35,7 @@ export const userNavMenu: AdminNavMenutype = [
 			},
 			{
 				title: 'Data Penjual',
-				url: '/admin/data-penjual'
+				url: '/dashboard/penjualan-barang'
 			},
 			{
 				title: 'Data Kategori',
@@ -140,6 +97,17 @@ export const userNavMenu: AdminNavMenutype = [
 			{
 				title: 'EOQ',
 				url: '/admin/eoq'
+			}
+		]
+	},
+	{
+		title: 'Manajemen Stok',
+		url: '/dashboard/stok',
+		icon: ListOrdered,
+		items: [
+			{
+				title: 'Tabel FIFO',
+				url: '/dashboard/tabel-fifo'
 			}
 		]
 	}
