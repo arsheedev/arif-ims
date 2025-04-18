@@ -90,9 +90,21 @@
 	.table-container {
 		width: 100%;
 		max-width: 400px;
-		background: white;
+		background: hsl(0 0% 100%);
 		border-radius: 0.5rem;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 		padding: 1rem;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.table-container {
+			background: hsl(240 10% 15%);
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+		}
+
+		:global(.dark) .table-container {
+			background: hsl(240 10% 15%);
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+		}
 	}
 </style>
