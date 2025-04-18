@@ -90,6 +90,8 @@ model PembelianBarang {
   biayaPesan             Int               @default(0)
   biayaSimpan            Int               @default(0)
   PenguranganStok        PenguranganStok[]
+  createdAt              DateTime          @default(now())
+  updatedAt              DateTime          @updatedAt
 }
 
 model PenjualanBarang {
@@ -101,6 +103,8 @@ model PenjualanBarang {
   tanggalPenjualan       DateTime          @default(now())
   jumlah                 Int               @default(0)
   PenguranganStok        PenguranganStok[]
+  createdAt              DateTime          @default(now())
+  updatedAt              DateTime          @updatedAt
 }
 
 model PenguranganStok {
@@ -110,6 +114,8 @@ model PenguranganStok {
   pembelianBarang PembelianBarang @relation(fields: [pembelianId], references: [id])
   pembelianId     Int
   jumlahDiambil   Int
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
 }
 
 enum Role {
