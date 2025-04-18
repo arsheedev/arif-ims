@@ -34,22 +34,27 @@ export const actions: Actions = {
 			where: { namaBarangId },
 			include: {
 				PenguranganStok: true
-			},
-			orderBy: { tanggalPembelian: 'asc' }
-		})
-
-		const listWithRemaining = pembelianList.map((pb) => {
-			const totalUsed = pb.PenguranganStok.reduce((sum, ps) => sum + ps.jumlahDiambil, 0)
-			return {
-				...pb,
-				sisaStok: pb.jumlah - totalUsed
 			}
 		})
+
+		const pembelianSorted = pembelianList
+			.map((pb) => {
+				const totalUsed = pb.PenguranganStok.reduce((sum, ps) => sum + ps.jumlahDiambil, 0)
+
+				return {
+					...pb,
+					tanggalPrioritas: pb.tanggalPembuatan ?? pb.tanggalPembelian,
+					sisaStok: pb.jumlah - totalUsed
+				}
+			})
+			.sort(
+				(a, b) => new Date(a.tanggalPrioritas).getTime() - new Date(b.tanggalPrioritas).getTime()
+			)
 
 		let remaining = jumlahPenjualan
 		const stokDipakai: { pembelianId: number; jumlahDiambil: number }[] = []
 
-		for (const item of listWithRemaining) {
+		for (const item of pembelianSorted) {
 			if (remaining <= 0) break
 			if (item.sisaStok <= 0) continue
 

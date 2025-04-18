@@ -82,6 +82,7 @@ model PembelianBarang {
   kodeTransaksiPembelian String            @unique @db.VarChar(255)
   namaBarang             NamaBarang        @relation(fields: [namaBarangId], references: [id])
   namaBarangId           Int
+  tanggalPembuatan       DateTime?
   tanggalPembelian       DateTime          @default(now())
   supplier               SupplierBarang    @relation(fields: [supplierBarangId], references: [id])
   supplierBarangId       Int
