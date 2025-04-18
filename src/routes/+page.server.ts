@@ -60,10 +60,6 @@ export const actions: Actions = {
 			maxAge: 60 * 60 * 24
 		})
 
-		if (userExist.role === 'ADMIN') {
-			redirect(303, '/admin')
-		}
-
 		redirect(303, '/dashboard')
 	}
 }

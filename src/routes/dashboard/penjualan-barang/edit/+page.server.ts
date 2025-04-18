@@ -50,17 +50,21 @@ export const actions: Actions = {
 			where: { namaBarangId },
 			include: {
 				PenguranganStok: true
-			},
-			orderBy: { tanggalPembelian: 'asc' }
-		})
-
-		const listWithRemaining = pembelianList.map((pb) => {
-			const totalUsed = pb.PenguranganStok.reduce((sum, ps) => sum + ps.jumlahDiambil, 0)
-			return {
-				...pb,
-				sisaStok: pb.jumlah - totalUsed
 			}
 		})
+
+		const listWithRemaining = pembelianList
+			.map((pb) => {
+				const totalUsed = pb.PenguranganStok.reduce((sum, ps) => sum + ps.jumlahDiambil, 0)
+				return {
+					...pb,
+					tanggalPrioritas: pb.tanggalPembuatan ?? pb.tanggalPembelian,
+					sisaStok: pb.jumlah - totalUsed
+				}
+			})
+			.sort(
+				(a, b) => new Date(a.tanggalPrioritas).getTime() - new Date(b.tanggalPrioritas).getTime()
+			)
 
 		let remaining = newJumlah
 		const stokDipakai: { pembelianId: number; jumlahDiambil: number }[] = []
@@ -82,6 +86,7 @@ export const actions: Actions = {
 		}
 
 		await db.$transaction(async (tx) => {
+			// Update penjualan
 			await tx.penjualanBarang.update({
 				where: { id },
 				data: {
@@ -93,6 +98,7 @@ export const actions: Actions = {
 				}
 			})
 
+			// Tambahkan pengurangan stok baru
 			for (const stok of stokDipakai) {
 				await tx.penguranganStok.create({
 					data: {
