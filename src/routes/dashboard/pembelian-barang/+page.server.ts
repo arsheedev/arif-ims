@@ -15,7 +15,15 @@ export const actions: Actions = {
 		const formData = await request.formData()
 		const id = Number(formData.get('id'))
 
-		await db.pembelianBarang.delete({ where: { id } })
+		await db.$transaction(async (tx) => {
+			await tx.penguranganStok.deleteMany({
+				where: { pembelianId: id }
+			})
+
+			await tx.pembelianBarang.delete({
+				where: { id }
+			})
+		})
 
 		return { message: 'Pembelian barang berhasil dihapus!' }
 	}

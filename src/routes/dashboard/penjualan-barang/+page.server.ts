@@ -15,8 +15,24 @@ export const actions: Actions = {
 		const formData = await request.formData()
 		const id = Number(formData.get('id'))
 
-		await db.penjualanBarang.delete({ where: { id } })
+		try {
+			await db.$transaction(async (tx) => {
+				await tx.penguranganStok.deleteMany({
+					where: { penjualanId: id }
+				})
 
-		return { message: 'Pembelian barang berhasil dihapus!' }
+				await tx.penjualanBarang.delete({
+					where: { id }
+				})
+			})
+
+			return { message: 'Penjualan barang berhasil dihapus!' }
+		} catch (error) {
+			console.error(error)
+			return {
+				error: true,
+				message: 'Terjadi kesalahan saat menghapus data penjualan.'
+			}
+		}
 	}
 }
