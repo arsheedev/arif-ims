@@ -15,8 +15,6 @@
 			year: 'numeric'
 		})
 	}
-
-	$: console.log('Data diterima di client:', stokBarang)
 </script>
 
 <div class="container mx-auto p-4">

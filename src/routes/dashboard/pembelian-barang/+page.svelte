@@ -7,7 +7,7 @@
 	import type { PageData } from './$types'
 
 	let { data }: { data: PageData } = $props()
-	let search = ''
+	let search = $state()
 </script>
 
 <div class="container">
