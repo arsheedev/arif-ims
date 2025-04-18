@@ -22,7 +22,7 @@ export const actions: Actions = {
 			})
 		}
 
-		const { namaBarangId } = form.data
+		const { namaBarangId, hariKerja, leadTime, kebutuhanMax } = form.data
 
 		const pembelianList = await db.pembelianBarang.findMany({
 			where: { namaBarangId },
@@ -45,48 +45,26 @@ export const actions: Actions = {
 			permintaanHarian.set(tgl, (permintaanHarian.get(tgl) ?? 0) + p.jumlah)
 		}
 
-		const rataRataPermintaanHarian = Math.round(
-			[...permintaanHarian.values()].reduce((a, b) => a + b, 0) / permintaanHarian.size
-		)
-
-		const maxPermintaanHarian = Math.max(...permintaanHarian.values())
-
-		const leadTimes = pembelianList.map((pb) => {
-			const now = new Date()
-			const diff = Math.ceil(
-				(now.getTime() - pb.tanggalPembelian.getTime()) / (1000 * 60 * 60 * 24)
-			)
-			return diff
-		})
-
-		const rataRataLeadTime = Math.round(leadTimes.reduce((a, b) => a + b, 0) / leadTimes.length)
-		const maxLeadTime = Math.max(...leadTimes)
-
 		const lastPembelian = pembelianList[pembelianList.length - 1]
 		const biayaPesan = lastPembelian.biayaPesan
 		const biayaSimpan = lastPembelian.biayaSimpan
 
 		const tahunIni = new Date().getFullYear()
-		const permintaanTahunan = penjualanList
-			.filter((p) => p.tanggalPenjualan.getFullYear() === tahunIni)
-			.reduce((acc, cur) => acc + cur.jumlah, 0)
+		const permintaanTahunan =
+			penjualanList
+				.filter((p) => p.tanggalPenjualan.getFullYear() === tahunIni)
+				.reduce((acc, cur) => acc + cur.jumlah, 0) / 12
 
-		const safetyStock =
-			maxPermintaanHarian * maxLeadTime - rataRataPermintaanHarian * rataRataLeadTime
+		const safetyStock = Math.round((kebutuhanMax * 52 * leadTime) / hariKerja)
 
-		const reorderPoint = rataRataPermintaanHarian * rataRataLeadTime + safetyStock
+		const reorderPoint = Math.round((kebutuhanMax / 7) * leadTime + safetyStock)
 
 		const eoq = Math.round(Math.sqrt((2 * permintaanTahunan * biayaPesan) / biayaSimpan))
 
 		return {
 			safetyStock,
 			reorderPoint,
-			eoq,
-			rataRataPermintaanHarian,
-			maxPermintaanHarian,
-			rataRataLeadTime,
-			maxLeadTime,
-			permintaanTahunan
+			eoq
 		}
 	}
 }
