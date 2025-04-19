@@ -8,6 +8,7 @@
 		data.form.data = {
 			idPembelian: data.pembelianBarang.idPembelian,
 			kodeTransaksiPembelian: data.pembelianBarang.kodeTransaksiPembelian,
+			tanggalPembuatan: data.pembelianBarang.tanggalPembuatan,
 			tanggalPembelian: data.pembelianBarang.tanggalPembelian,
 			namaBarangId: data.pembelianBarang.namaBarangId,
 			supplierBarangId: data.pembelianBarang.supplierBarangId,

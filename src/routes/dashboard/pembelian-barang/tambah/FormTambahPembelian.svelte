@@ -58,10 +58,18 @@
 		dateStyle: 'long'
 	})
 
-	let tanggalValue = $state<DateValue | undefined>()
+	let tanggalPembuatanOpen = $state(false)
+	let tanggalPembelianOpen = $state(false)
+
+	let tanggalPembuatanValue = $state<DateValue | undefined>()
+	let tanggalPembelianValue = $state<DateValue | undefined>()
 
 	$effect(() => {
-		tanggalValue = $formData.tanggalPembelian
+		tanggalPembuatanValue = $formData.tanggalPembuatan
+			? parseDate($formData.tanggalPembuatan.toISOString().split('T')[0])
+			: undefined
+
+		tanggalPembelianValue = $formData.tanggalPembelian
 			? parseDate($formData.tanggalPembelian.toISOString().split('T')[0])
 			: undefined
 	})
@@ -94,37 +102,75 @@
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Field {form} name="tanggalPembelian">
+	<Form.Field {form} name="tanggalPembuatan">
 		<Form.Control>
 			{#snippet children({ props })}
-				<Form.Label>Tanggal Pembelian</Form.Label>
-				<Popover.Root>
+				<Form.Label>Tanggal Pembuatan</Form.Label>
+				<Popover.Root bind:open={tanggalPembuatanOpen}>
 					<Popover.Trigger
 						{...props}
 						class={cn(
 							buttonVariants({ variant: 'outline' }),
 							'w-full justify-start pl-4 text-left font-normal',
-							!tanggalValue && 'text-muted-foreground'
+							!tanggalPembuatanValue && 'text-muted-foreground'
 						)}
 					>
-						{tanggalValue
-							? df.format(tanggalValue.toDate(getLocalTimeZone()))
+						{tanggalPembuatanValue
+							? df.format(tanggalPembuatanValue.toDate(getLocalTimeZone()))
+							: 'Pilih tanggal pembuatan...'}
+						<CalendarIcon class="ml-auto size-4 opacity-50" />
+					</Popover.Trigger>
+					<Popover.Content class="w-auto p-0" side="top">
+						<Calendar
+							type="single"
+							value={tanggalPembuatanValue}
+							minValue={new CalendarDate(2000, 1, 1)}
+							maxValue={today(getLocalTimeZone())}
+							calendarLabel="Tanggal Pembuatan"
+							onValueChange={(v) => {
+								if (v) {
+									$formData.tanggalPembuatan = new Date(v.toString())
+									tanggalPembuatanOpen = false
+								}
+							}}
+						/>
+					</Popover.Content>
+				</Popover.Root>
+				<Form.FieldErrors />
+				<input hidden name={props.name} value={$formData.tanggalPembuatan?.toISOString()} />
+			{/snippet}
+		</Form.Control>
+	</Form.Field>
+
+	<Form.Field {form} name="tanggalPembelian">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>Tanggal Pembelian</Form.Label>
+				<Popover.Root bind:open={tanggalPembelianOpen}>
+					<Popover.Trigger
+						{...props}
+						class={cn(
+							buttonVariants({ variant: 'outline' }),
+							'w-full justify-start pl-4 text-left font-normal',
+							!tanggalPembelianValue && 'text-muted-foreground'
+						)}
+					>
+						{tanggalPembelianValue
+							? df.format(tanggalPembelianValue.toDate(getLocalTimeZone()))
 							: 'Pilih tanggal pembelian...'}
 						<CalendarIcon class="ml-auto size-4 opacity-50" />
 					</Popover.Trigger>
 					<Popover.Content class="w-auto p-0" side="top">
 						<Calendar
 							type="single"
-							value={tanggalValue as DateValue}
-							bind:placeholder={tanggalPlaceholder}
+							value={tanggalPembelianValue}
 							minValue={new CalendarDate(2000, 1, 1)}
 							maxValue={today(getLocalTimeZone())}
 							calendarLabel="Tanggal Pembelian"
 							onValueChange={(v) => {
 								if (v) {
 									$formData.tanggalPembelian = new Date(v.toString())
-								} else {
-									$formData.tanggalPembelian = null
+									tanggalPembelianOpen = false
 								}
 							}}
 						/>

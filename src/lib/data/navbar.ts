@@ -52,21 +52,6 @@ export const userNavMenu: AdminNavMenutype = [
 		]
 	},
 	{
-		title: 'Transaksi',
-		url: '/admin/transaksi',
-		icon: Bot,
-		items: [
-			{
-				title: 'Pembelian',
-				url: '/admin/pembelian'
-			},
-			{
-				title: 'Penjualan',
-				url: '/admin/penjualan'
-			}
-		]
-	},
-	{
 		title: 'Perhitungan',
 		url: '/dashboard/perhitungan',
 		icon: BookOpen,
@@ -74,29 +59,6 @@ export const userNavMenu: AdminNavMenutype = [
 			{
 				title: 'Perhitungan EOQ',
 				url: '/dashboard/perhitungan-eoq'
-			}
-		]
-	},
-	{
-		title: 'Laporan',
-		url: '/admin/laporan',
-		icon: BookOpen,
-		items: [
-			{
-				title: 'Stok Barang',
-				url: '/admin/stok-barang'
-			},
-			{
-				title: 'Pembelian',
-				url: '/admin/pembelian'
-			},
-			{
-				title: 'Penjualan',
-				url: '/admin/penjualan'
-			},
-			{
-				title: 'EOQ',
-				url: '/admin/eoq'
 			}
 		]
 	},

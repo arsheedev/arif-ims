@@ -3,11 +3,27 @@
 	import { Input } from '$lib/components/ui/input'
 	import * as Table from '$lib/components/ui/table'
 	import Plus from 'lucide-svelte/icons/plus'
+	import Printer from 'lucide-svelte/icons/printer'
 	import { enhance } from '$app/forms'
 	import type { PageData } from './$types'
+	import { getLocalTimeZone, today } from '@internationalized/date'
+	import { RangeCalendar } from '$lib/components/ui/range-calendar'
+	import * as Popover from '$lib/components/ui/popover'
 
 	let { data }: { data: PageData } = $props()
 	let search = $state<string>('')
+
+	const start = today(getLocalTimeZone())
+	const end = start.add({ days: 7 })
+
+	let dateRange = $state({
+		start,
+		end
+	})
+
+	function handlePrint() {
+		window.location.href = `/dashboard/pembelian-barang/cetak-laporan?start=${dateRange.start.toString()}&end=${dateRange.end.toString()}`
+	}
 </script>
 
 <div class="container">
@@ -19,7 +35,31 @@
 				<Plus class="icon" />
 				<span>Tambah Pembelian</span>
 			</Button>
+
+			<Popover.Root>
+				<Popover.Trigger asChild>
+					<Button variant="outline">
+						<Printer class="icon" />
+						<span>Cetak Laporan</span>
+					</Button>
+				</Popover.Trigger>
+				<Popover.Content class="w-auto p-4" align="start">
+					<div class="flex flex-col gap-4">
+						<h3 class="font-medium">Pilih Periode Laporan</h3>
+
+						<RangeCalendar bind:value={dateRange} class="rounded-md border" />
+
+						<div class="flex justify-end gap-2">
+							<Popover.Close asChild>
+								<Button variant="outline">Batal</Button>
+							</Popover.Close>
+							<Button on:click={handlePrint}>Cetak</Button>
+						</div>
+					</div>
+				</Popover.Content>
+			</Popover.Root>
 		</div>
+
 		<div class="right-search">
 			<Input type="text" placeholder="Cari kode transaksi" bind:value={search} />
 		</div>
@@ -32,6 +72,7 @@
 					<Table.Head>Kode Transaksi</Table.Head>
 					<Table.Head>Nama Barang</Table.Head>
 					<Table.Head>Supplier</Table.Head>
+					<Table.Head>Tanggal Pembuatan</Table.Head>
 					<Table.Head>Tanggal Pembelian</Table.Head>
 					<Table.Head>Jumlah Stok</Table.Head>
 					<Table.Head>Biaya Pesan</Table.Head>
@@ -52,7 +93,20 @@
 							<Table.Cell>{item.kodeTransaksiPembelian}</Table.Cell>
 							<Table.Cell>{item.namaBarang.namaBarang}</Table.Cell>
 							<Table.Cell>{item.supplier?.nama || '-'}</Table.Cell>
-							<Table.Cell>{item.tanggalPembelian?.toLocaleDateString('id-ID') || '-'}</Table.Cell>
+							<Table.Cell>
+								{item.tanggalPembuatan?.toLocaleDateString('id-ID', {
+									day: '2-digit',
+									month: '2-digit',
+									year: 'numeric'
+								}) || '-'}
+							</Table.Cell>
+							<Table.Cell>
+								{item.tanggalPembelian?.toLocaleDateString('id-ID', {
+									day: '2-digit',
+									month: '2-digit',
+									year: 'numeric'
+								}) || '-'}
+							</Table.Cell>
 							<Table.Cell>{item.jumlah}</Table.Cell>
 							<Table.Cell>
 								{item.biayaPesan
@@ -106,15 +160,22 @@
 	.title {
 		margin-bottom: 0.5rem;
 		font-size: 1.2rem;
+		font-weight: 600;
 	}
 
 	.table-header {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin-bottom: 0.75rem;
+		margin-bottom: 1rem;
 		flex-wrap: wrap;
-		gap: 0.5rem;
+		gap: 0.75rem;
+	}
+
+	.left-toolbar {
+		display: flex;
+		gap: 0.75rem;
+		align-items: center;
 	}
 
 	.right-search {
@@ -124,6 +185,8 @@
 
 	.table-wrapper {
 		overflow-x: auto;
+		margin-top: 1rem;
+		border-radius: 0.375rem;
 	}
 
 	.actions {
@@ -132,8 +195,13 @@
 	}
 
 	@media (max-width: 768px) {
-		.table-wrapper {
-			overflow-x: auto;
+		.table-header {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.right-search {
+			width: 100%;
 		}
 	}
 </style>

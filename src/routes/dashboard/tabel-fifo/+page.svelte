@@ -71,6 +71,10 @@
 										>
 										<th
 											class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300"
+											>Tanggal Pembuatan</th
+										>
+										<th
+											class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300"
 											>Tanggal Pembelian</th
 										>
 										<th
@@ -95,6 +99,10 @@
 											<td
 												class="whitespace-nowrap px-4 py-4 text-sm text-gray-900 dark:text-gray-100"
 												>{detail.kodeTransaksi || '-'}</td
+											>
+											<td
+												class="whitespace-nowrap px-4 py-4 text-sm text-gray-900 dark:text-gray-100"
+												>{formatDate(detail.tanggalPembuatan)}</td
 											>
 											<td
 												class="whitespace-nowrap px-4 py-4 text-sm text-gray-900 dark:text-gray-100"
@@ -127,7 +135,7 @@
 									{:else}
 										<tr>
 											<td
-												colspan="5"
+												colspan="6"
 												class="px-4 py-4 text-center text-sm text-gray-500 dark:text-gray-400"
 											>
 												Tidak ada data pembelian

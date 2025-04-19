@@ -25,6 +25,7 @@ export const load: PageServerLoad = async () => {
 			return {
 				idPembelian: pembelian.id,
 				kodeTransaksi: pembelian.kodeTransaksiPembelian,
+				tanggalPembuatan: pembelian.tanggalPembuatan,
 				tanggalPembelian: pembelian.tanggalPembelian,
 				jumlahAwal: pembelian.jumlah,
 				jumlahTerjual: totalTerjual,

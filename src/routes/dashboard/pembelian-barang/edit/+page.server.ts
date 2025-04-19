@@ -46,6 +46,7 @@ export const actions: Actions = {
 			kodeTransaksiPembelian,
 			namaBarangId,
 			supplierBarangId,
+			tanggalPembuatan,
 			tanggalPembelian,
 			biayaPesan,
 			biayaSimpan
@@ -61,6 +62,7 @@ export const actions: Actions = {
 				kodeTransaksiPembelian,
 				namaBarangId,
 				supplierBarangId,
+				tanggalPembuatan,
 				tanggalPembelian
 			}
 		})
