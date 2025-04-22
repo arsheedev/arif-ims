@@ -23,7 +23,7 @@
 	})
 
 	function handlePrint() {
-		goto(`/dashboard/pembelian-barang/test?dateStart=${dateRange.start}&dateEnd=${dateRange.end}`)
+		goto(`/dashboard/pembelian-barang/cetak?dateStart=${dateRange.start}&dateEnd=${dateRange.end}`)
 	}
 </script>
 

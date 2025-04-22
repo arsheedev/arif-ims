@@ -1,14 +1,30 @@
 <script lang="ts">
+	import { enhance } from '$app/forms'
+	import { goto } from '$app/navigation'
 	import { Button } from '$lib/components/ui/button'
 	import { Input } from '$lib/components/ui/input'
+	import * as Popover from '$lib/components/ui/popover'
+	import { RangeCalendar } from '$lib/components/ui/range-calendar'
 	import * as Table from '$lib/components/ui/table'
+	import { getLocalTimeZone, today } from '@internationalized/date'
 	import Plus from 'lucide-svelte/icons/plus'
-	import { enhance } from '$app/forms'
+	import Printer from 'lucide-svelte/icons/printer'
 	import type { PageData } from './$types'
-	import type { PenjualanBarang, NamaBarang, SupplierBarang } from '@prisma/client'
 
 	let { data }: { data: PageData } = $props()
 	let search = $state<string>('')
+
+	const start = today(getLocalTimeZone())
+	const end = start.add({})
+
+	let dateRange = $state({
+		start,
+		end
+	})
+
+	function handlePrint() {
+		goto(`/dashboard/penjualan-barang/cetak?dateStart=${dateRange.start}&dateEnd=${dateRange.end}`)
+	}
 </script>
 
 <div class="container">
@@ -20,6 +36,29 @@
 				<Plus class="icon" />
 				<span>Tambah Penjualan</span>
 			</Button>
+
+			<Popover.Root>
+				<Popover.Trigger>
+					<Button variant="outline">
+						<Printer class="icon" />
+						<span>Cetak Laporan</span>
+					</Button>
+				</Popover.Trigger>
+				<Popover.Content class="w-auto p-4" align="start">
+					<div class="flex flex-col gap-4">
+						<h3 class="font-medium">Pilih Periode Laporan</h3>
+
+						<RangeCalendar bind:value={dateRange} class="rounded-md border" />
+
+						<div class="flex justify-end gap-2">
+							<Popover.Close>
+								<Button variant="outline">Batal</Button>
+							</Popover.Close>
+							<Button onclick={handlePrint}>Cetak</Button>
+						</div>
+					</div>
+				</Popover.Content>
+			</Popover.Root>
 		</div>
 		<div class="right-search">
 			<Input type="text" placeholder="Cari kode transaksi" bind:value={search} />
