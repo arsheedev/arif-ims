@@ -1,11 +1,13 @@
 import BookOpen from 'lucide-svelte/icons/book-open'
 import Bot from 'lucide-svelte/icons/bot'
 import SquareTerminal from 'lucide-svelte/icons/square-terminal'
+import Database from 'lucide-svelte/icons/database'
+import ListOrdered from 'lucide-svelte/icons/list-ordered'
 
 export type AdminNavMenutype = {
 	title: string
 	url: string
-	icon: typeof SquareTerminal | typeof BookOpen | typeof Bot
+	icon: typeof SquareTerminal | typeof BookOpen | typeof Bot | typeof Database | typeof ListOrdered
 	isActive?: boolean
 	items: {
 		title: string
@@ -13,67 +15,61 @@ export type AdminNavMenutype = {
 	}[]
 }[]
 
-export const adminNavMenu: AdminNavMenutype = [
+export const userNavMenu: AdminNavMenutype = [
 	{
-		title: 'User',
-		url: '/admin/user',
-		icon: SquareTerminal,
+		title: 'Data Master',
+		url: '/admin/data-master',
+		icon: Database,
 		items: [
 			{
-				title: 'Semua User',
-				url: '/admin/user'
+				title: 'Data Barang',
+				url: '/dashboard/nama-barang'
 			},
 			{
-				title: 'Perlu Verifikasi',
-				url: '/admin/user?verified=false'
-			}
-		]
-	},
-	{
-		title: 'Pembayaran',
-		url: '/admin/pembayaran',
-		icon: Bot,
-		items: [
+				title: 'Data Produk',
+				url: '/dashboard/produk'
+			},
 			{
-				title: 'Semua Pembayaran',
-				url: '/admin/pembayaran'
+				title: 'Data Pembelian',
+				url: '/dashboard/pembelian-barang'
+			},
+			{
+				title: 'Data Penjualan',
+				url: '/dashboard/penjualan-barang'
+			},
+			{
+				title: 'Data Kategori',
+				url: '/dashboard/kategori-barang'
+			},
+			{
+				title: 'Data Satuan',
+				url: '/dashboard/satuan-barang'
+			},
+			{
+				title: 'Data Supplier',
+				url: '/dashboard/supplier-barang'
 			}
 		]
 	},
 	{
-		title: 'Pembayaran User',
-		url: '/admin/pembayaran-user',
+		title: 'Perhitungan',
+		url: '/dashboard/perhitungan',
 		icon: BookOpen,
 		items: [
 			{
-				title: 'Histori Pembayaran',
-				url: '/admin/pembayaran-user'
-			},
-			{
-				title: 'Perlu Verifikasi',
-				url: '/admin/pembayaran-user?verified=false'
+				title: 'Perhitungan EOQ',
+				url: '/dashboard/perhitungan-eoq'
 			}
 		]
-	}
-]
-
-export const userNavMenu: AdminNavMenutype = [
+	},
 	{
-		title: 'Pembayaran',
-		url: '/dashboard/pembayaran',
-		icon: SquareTerminal,
+		title: 'Manajemen Stok',
+		url: '/dashboard/stok',
+		icon: ListOrdered,
 		items: [
 			{
-				title: 'Belum Dibayar',
-				url: '/dashboard/pembayaran/perlu-dibayar'
-			},
-			{
-				title: 'Sudah Dibayar',
-				url: '/dashboard/pembayaran/sudah-dibayar'
-			},
-			{
-				title: 'Histori Pembayaran',
-				url: '/dashboard/pembayaran/histori-pembayaran'
+				title: 'Tabel FIFO',
+				url: '/dashboard/tabel-fifo'
 			}
 		]
 	}

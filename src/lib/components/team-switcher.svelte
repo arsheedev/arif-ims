@@ -19,8 +19,8 @@
 				<GalleryVerticalEnd class="size-4" />
 			</div>
 			<div class="grid flex-1 text-left text-sm leading-tight">
-				<span class="truncate font-semibold"> Arshee Corp </span>
-				<span class="truncate text-xs">Startup</span>
+				<span class="truncate font-semibold"> Toko Barokah </span>
+				<span class="truncate text-xs">Pengelolaan Stok Barang</span>
 			</div>
 			<ThemeToggle />
 		</Sidebar.MenuButton>

@@ -3,6 +3,9 @@
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js'
 	import type { AdminNavMenutype } from '$lib/data/navbar'
 	import ChevronRight from 'lucide-svelte/icons/chevron-right'
+	import ShoppingCart from 'lucide-svelte/icons/shopping-cart'
+	import HandCoins from 'lucide-svelte/icons/hand-coins'
+	import { Button } from '$lib/components/ui/button/index.js'
 
 	let {
 		items
@@ -13,6 +16,22 @@
 
 <Sidebar.Group>
 	<Sidebar.GroupLabel>Main Menu</Sidebar.GroupLabel>
+	<div class="mb-6 mt-4 space-y-2 px-3">
+		<Button
+			href="/dashboard/pembelian-barang/tambah"
+			class="flex w-full items-center gap-2 bg-green-600 text-white hover:bg-green-700"
+		>
+			<ShoppingCart class="h-4 w-4" />
+			Tambah Pembelian
+		</Button>
+		<Button
+			href="/dashboard/penjualan-barang/tambah"
+			class="flex w-full items-center gap-2 bg-blue-600 text-white hover:bg-blue-700"
+		>
+			<HandCoins class="h-4 w-4" />
+			Tambah Penjualan
+		</Button>
+	</div>
 	<Sidebar.Menu>
 		{#each items as mainItem (mainItem.title)}
 			<Collapsible.Root open={mainItem.isActive} class="group/collapsible">

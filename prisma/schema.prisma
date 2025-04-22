@@ -71,35 +71,51 @@ model Produk {
   kategoriBarangId Int
   satuan           SatuanBarang   @relation(fields: [satuanBarangId], references: [id])
   satuanBarangId   Int
-  hargaBeli        Int            @default(0)
-  hargaJual        Int            @default(0)
   keterangan       String?        @db.LongText
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
 }
 
 model PembelianBarang {
-  id                     Int            @id @default(autoincrement())
-  idPembelian            String         @unique @db.VarChar(255)
-  kodeTransaksiPembelian String         @unique @db.VarChar(255)
-  namaBarang             NamaBarang     @relation(fields: [namaBarangId], references: [id])
+  id                     Int               @id @default(autoincrement())
+  idPembelian            String            @unique @db.VarChar(255)
+  kodeTransaksiPembelian String            @unique @db.VarChar(255)
+  namaBarang             NamaBarang        @relation(fields: [namaBarangId], references: [id])
   namaBarangId           Int
-  tanggalPembelian       DateTime       @default(now())
-  supplier               SupplierBarang @relation(fields: [supplierBarangId], references: [id])
+  tanggalPembuatan       DateTime?
+  tanggalPembelian       DateTime          @default(now())
+  supplier               SupplierBarang    @relation(fields: [supplierBarangId], references: [id])
   supplierBarangId       Int
-  jumlah                 Int            @default(0)
-  hargaBeli              Int            @default(0)
-  hargaJual              Int            @default(0)
+  jumlah                 Int               @default(0)
+  biayaPesan             Int               @default(0)
+  biayaSimpan            Int               @default(0)
+  PenguranganStok        PenguranganStok[]
+  createdAt              DateTime          @default(now())
+  updatedAt              DateTime          @updatedAt
 }
 
 model PenjualanBarang {
-  id                     Int        @id @default(autoincrement())
-  idPenjualan            String     @unique @db.VarChar(255)
-  kodeTransaksiPenjualan String     @unique @db.VarChar(255)
-  namaBarang             NamaBarang @relation(fields: [namaBarangId], references: [id])
+  id                     Int               @id @default(autoincrement())
+  idPenjualan            String            @unique @db.VarChar(255)
+  kodeTransaksiPenjualan String            @unique @db.VarChar(255)
+  namaBarang             NamaBarang        @relation(fields: [namaBarangId], references: [id])
   namaBarangId           Int
-  tanggalPenjualan       DateTime   @default(now())
-  jumlah                 Int        @default(0)
+  tanggalPenjualan       DateTime          @default(now())
+  jumlah                 Int               @default(0)
+  PenguranganStok        PenguranganStok[]
+  createdAt              DateTime          @default(now())
+  updatedAt              DateTime          @updatedAt
+}
+
+model PenguranganStok {
+  id              Int             @id @default(autoincrement())
+  penjualanBarang PenjualanBarang @relation(fields: [penjualanId], references: [id])
+  penjualanId     Int
+  pembelianBarang PembelianBarang @relation(fields: [pembelianId], references: [id])
+  pembelianId     Int
+  jumlahDiambil   Int
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
 }
 
 enum Role {
