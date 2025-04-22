@@ -7,7 +7,7 @@
 		expandedBarang = expandedBarang === id ? null : id
 	}
 
-	function formatDate(date: Date) {
+	function formatDate(date: Date | null) {
 		if (!date) return '-'
 		return new Date(date).toLocaleDateString('id-ID', {
 			day: '2-digit',
@@ -52,12 +52,20 @@
 								{/if}
 							</div>
 						</div>
-						<button
-							class="text-sm font-medium text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
-							on:click={() => toggleExpand(barang.idDaftarBarang)}
-						>
-							{expandedBarang === barang.idDaftarBarang ? 'Sembunyikan' : 'Lihat Detail FIFO'}
-						</button>
+						<div class="flex gap-2">
+							<button
+								class="text-sm font-medium text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+								on:click={() => toggleExpand(barang.idDaftarBarang)}
+							>
+								{expandedBarang === barang.idDaftarBarang ? 'Sembunyikan' : 'Lihat Detail FIFO'}
+							</button>
+							<a
+								href="/dashboard/tabel-fifo/cetak/{barang.idDaftarBarang}"
+								class="text-sm font-medium text-green-500 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300"
+							>
+								Cetak FIFO
+							</a>
+						</div>
 					</div>
 
 					{#if expandedBarang === barang.idDaftarBarang}
