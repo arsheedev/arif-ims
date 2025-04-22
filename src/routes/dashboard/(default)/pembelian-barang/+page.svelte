@@ -1,14 +1,15 @@
 <script lang="ts">
+	import { enhance } from '$app/forms'
+	import { goto } from '$app/navigation'
 	import { Button } from '$lib/components/ui/button'
 	import { Input } from '$lib/components/ui/input'
+	import * as Popover from '$lib/components/ui/popover'
+	import { RangeCalendar } from '$lib/components/ui/range-calendar'
 	import * as Table from '$lib/components/ui/table'
+	import { getLocalTimeZone, today } from '@internationalized/date'
 	import Plus from 'lucide-svelte/icons/plus'
 	import Printer from 'lucide-svelte/icons/printer'
-	import { enhance } from '$app/forms'
 	import type { PageData } from './$types'
-	import { getLocalTimeZone, today } from '@internationalized/date'
-	import { RangeCalendar } from '$lib/components/ui/range-calendar'
-	import * as Popover from '$lib/components/ui/popover'
 
 	let { data }: { data: PageData } = $props()
 	let search = $state<string>('')
@@ -22,7 +23,7 @@
 	})
 
 	function handlePrint() {
-		window.location.href = `/dashboard/pembelian-barang/cetak-laporan?start=${dateRange.start.toString()}&end=${dateRange.end.toString()}`
+		goto(`/dashboard/pembelian-barang/test?dateStart=${dateRange.start}&dateEnd=${dateRange.end}`)
 	}
 </script>
 
@@ -37,7 +38,7 @@
 			</Button>
 
 			<Popover.Root>
-				<Popover.Trigger asChild>
+				<Popover.Trigger>
 					<Button variant="outline">
 						<Printer class="icon" />
 						<span>Cetak Laporan</span>
@@ -50,10 +51,10 @@
 						<RangeCalendar bind:value={dateRange} class="rounded-md border" />
 
 						<div class="flex justify-end gap-2">
-							<Popover.Close asChild>
+							<Popover.Close>
 								<Button variant="outline">Batal</Button>
 							</Popover.Close>
-							<Button on:click={handlePrint}>Cetak</Button>
+							<Button onclick={handlePrint}>Cetak</Button>
 						</div>
 					</div>
 				</Popover.Content>
