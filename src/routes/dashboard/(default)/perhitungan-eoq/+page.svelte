@@ -5,6 +5,7 @@
 	import * as Table from '$lib/components/ui/table'
 	import { Input } from '$lib/components/ui/input'
 	import { Label } from '$lib/components/ui/label'
+	import { goto } from '$app/navigation'
 
 	export let data: PageData
 	export let form: ActionData
@@ -18,6 +19,23 @@
 				{ name: 'EOQ (Economic Order Quantity)', value: form.eoq, unit: 'unit' }
 			]
 		: []
+
+	function handlePrint() {
+		if (!form || !form.safetyStock) return
+
+		const namaBarang = data.namaBarang.find((n) => n.id === selectedId)?.namaBarang || ''
+
+		const params = new URLSearchParams()
+		params.set('namaBarang', namaBarang)
+		params.set('kebutuhanMax', form.kebutuhanMax?.toString() || '')
+		params.set('leadTime', form.leadTime?.toString() || '')
+		params.set('hariKerja', form.hariKerja?.toString() || '')
+		params.set('safetyStock', form.safetyStock.toString())
+		params.set('reorderPoint', form.reorderPoint.toString())
+		params.set('eoq', form.eoq.toString())
+
+		goto(`/dashboard/perhitungan-eoq/cetak?${params.toString()}`)
+	}
 </script>
 
 <div class="page-container">
@@ -70,6 +88,7 @@
 	<div class="results-section">
 		<h2 class="section-title">Hasil Perhitungan</h2>
 		{#if form?.safetyStock !== undefined}
+			<Button onclick={handlePrint}>Cetak</Button>
 			<Table.Root class="result-table">
 				<Table.Header>
 					<Table.Row>

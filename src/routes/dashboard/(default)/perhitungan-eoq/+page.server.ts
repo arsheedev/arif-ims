@@ -1,28 +1,29 @@
-import PerhitunganEoqSchema from '$lib/schemas/perhitungan-eoq-schema'
 import db from '$lib/server/db'
-import { fail, type Actions } from '@sveltejs/kit'
-import { superValidate } from 'sveltekit-superforms'
-import { zod } from 'sveltekit-superforms/adapters'
-import type { PageServerLoad } from './$types'
+import { fail } from '@sveltejs/kit'
+import type { Actions, PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async () => {
 	const namaBarang = await db.namaBarang.findMany()
-
-	return { namaBarang, form: superValidate(zod(PerhitunganEoqSchema)) }
+	return { namaBarang }
 }
 
 export const actions: Actions = {
 	default: async (event) => {
-		const form = await superValidate(event, zod(PerhitunganEoqSchema))
+		const formData = await event.request.formData()
+		const namaBarangId = Number(formData.get('namaBarangId'))
+		const kebutuhanMax = Number(formData.get('kebutuhanMax'))
+		const leadTime = Number(formData.get('leadTime'))
+		const hariKerja = Number(formData.get('hariKerja'))
 
-		if (!form.valid) {
+		if (!namaBarangId || !kebutuhanMax || !leadTime || !hariKerja) {
 			return fail(400, {
-				form,
-				message: ''
+				error: 'Semua field harus diisi',
+				namaBarangId,
+				kebutuhanMax,
+				leadTime,
+				hariKerja
 			})
 		}
-
-		const { namaBarangId, hariKerja, leadTime, kebutuhanMax } = form.data
 
 		const pembelianList = await db.pembelianBarang.findMany({
 			where: { namaBarangId },
@@ -35,19 +36,18 @@ export const actions: Actions = {
 		})
 
 		if (penjualanList.length < 1 || pembelianList.length < 1) {
-			throw new Error('Data tidak cukup untuk perhitungan.')
-		}
-
-		const permintaanHarian = new Map<string, number>()
-
-		for (const p of penjualanList) {
-			const tgl = p.tanggalPenjualan.toISOString().split('T')[0]
-			permintaanHarian.set(tgl, (permintaanHarian.get(tgl) ?? 0) + p.jumlah)
+			return fail(400, {
+				error: 'Data tidak cukup untuk perhitungan',
+				namaBarangId,
+				kebutuhanMax,
+				leadTime,
+				hariKerja
+			})
 		}
 
 		const lastPembelian = pembelianList[pembelianList.length - 1]
-		const biayaPesan = lastPembelian.biayaPesan
-		const biayaSimpan = lastPembelian.biayaSimpan
+		const biayaPesan = lastPembelian.biayaPesan || 0
+		const biayaSimpan = lastPembelian.biayaSimpan || 0
 
 		const tahunIni = new Date().getFullYear()
 		const permintaanTahunan =
@@ -56,12 +56,15 @@ export const actions: Actions = {
 				.reduce((acc, cur) => acc + cur.jumlah, 0) / 12
 
 		const safetyStock = Math.round((kebutuhanMax * 52 * leadTime) / hariKerja)
-
 		const reorderPoint = Math.round((kebutuhanMax / 7) * leadTime + safetyStock)
-
 		const eoq = Math.round(Math.sqrt((2 * permintaanTahunan * biayaPesan) / biayaSimpan))
 
 		return {
+			success: true,
+			namaBarangId,
+			kebutuhanMax,
+			leadTime,
+			hariKerja,
 			safetyStock,
 			reorderPoint,
 			eoq
