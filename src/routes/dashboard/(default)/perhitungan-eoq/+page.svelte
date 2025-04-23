@@ -134,26 +134,29 @@
 
 	.form-section {
 		padding: 1.5rem;
-		background: hsl(0 0% 98%);
+		background: white;
 		border-radius: 0.75rem;
 		height: 100%;
 		min-height: 500px;
+		border: 1px solid hsl(0, 0%, 90%);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 	}
 
 	.results-section {
 		padding: 1.5rem;
-		background: hsl(0 0% 100%);
+		background: white;
 		border-radius: 0.75rem;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 		min-height: 500px;
 		height: 100%;
+		border: 1px solid hsl(0, 0%, 90%);
 	}
 
 	.section-title {
 		font-size: 1.5rem;
 		font-weight: 600;
 		margin-bottom: 1.5rem;
-		color: hsl(240 10% 20%);
+		color: hsl(240, 10%, 20%);
 	}
 
 	.form-content {
@@ -174,56 +177,50 @@
 		align-items: center;
 		justify-content: center;
 		height: 90%;
-		border: 1px dashed hsl(0 0% 80%);
+		border: 1px dashed hsl(0, 0%, 80%);
 		border-radius: 0.5rem;
 		padding: 2rem;
+		background-color: hsl(0, 0%, 98%);
 	}
 
 	.placeholder-text {
 		font-size: 1rem;
-		color: hsl(0 0% 45%);
+		color: hsl(0, 0%, 40%);
 		margin-bottom: 0.5rem;
+		font-weight: 500;
 	}
 
 	.placeholder-subtext {
 		font-size: 0.875rem;
-		color: hsl(0 0% 60%);
+		color: hsl(0, 0%, 50%);
 	}
 
-	@media (prefers-color-scheme: dark) {
-		.form-section {
-			background: hsl(240 10% 10%);
-		}
+	:global(.dark) .form-section {
+		background: hsl(240, 10%, 10%);
+		border-color: hsl(240, 10%, 20%);
+	}
 
-		.results-section {
-			background: hsl(240 10% 15%);
-			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-		}
+	:global(.dark) .results-section {
+		background: hsl(240, 10%, 15%);
+		border-color: hsl(240, 10%, 20%);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+	}
 
-		.section-title {
-			color: hsl(0 0% 90%);
-		}
+	:global(.dark) .section-title {
+		color: hsl(0, 0%, 90%);
+	}
 
-		.placeholder {
-			border-color: hsl(0 0% 25%);
-		}
+	:global(.dark) .placeholder {
+		border-color: hsl(0, 0%, 25%);
+		background-color: hsl(240, 10%, 12%);
+	}
 
-		.placeholder-text {
-			color: hsl(0 0% 60%);
-		}
+	:global(.dark) .placeholder-text {
+		color: hsl(0, 0%, 60%);
+	}
 
-		.placeholder-subtext {
-			color: hsl(0 0% 45%);
-		}
-
-		:global(.dark) .form-section {
-			background: hsl(240 10% 10%);
-		}
-
-		:global(.dark) .results-section {
-			background: hsl(240 10% 15%);
-			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-		}
+	:global(.dark) .placeholder-subtext {
+		color: hsl(0, 0%, 45%);
 	}
 
 	@media (max-width: 768px) {
